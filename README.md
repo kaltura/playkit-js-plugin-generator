@@ -1,5 +1,4 @@
-# generator-playkit-js-plugin [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
-> Plugin generator template for playkit-js web video player
+# generator-playkit-js-plugin
 
 ## Installation
 
