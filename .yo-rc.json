@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Dan Ziv",
+      "authorEmail": "dan.ziv@kaltura.com",
+      "authorUrl": ""
+    }
+  }
+}
