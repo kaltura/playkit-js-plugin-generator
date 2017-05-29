@@ -1,41 +1,43 @@
 'use strict';
 
-const webpack = require("webpack");
-const path = require("path");
-const pluginName = "<%= pluginName %>";
-const CopyPlugin = require('copy-webpack-plugin');
+const webpack = require( "webpack" );
+const path = require( "path" );
 
 module.exports = {
   context: __dirname + "/src",
-  entry: pluginName + ".js",
+  entry: {
+    "playkit-js-<%= pluginName %>": "<%= pluginName %>.js"
+  },
   output: {
     path: __dirname + "/dist",
-    filename: pluginName + ".js"
+    filename: '[name].js'
   },
   devtool: 'source-map',
   module: {
-    rules: [{
+    rules: [ {
       test: /\.js$/,
-      use: [{
+      use: [ {
         loader: "babel-loader"
-      }],
-      exclude: [/node_modules/]
+      } ],
+      exclude: [ /node_modules/ ]
     }, {
       test: /\.js$/,
       exclude: /node_modules/,
       enforce: 'pre',
-      use: [{loader: 'eslint-loader', options: {rules: {semi: 0}}}]
-    }]
+      use: [ {
+        loader: 'eslint-loader',
+        options: {
+          rules: {
+            semi: 0
+          }
+        }
+      } ]
+    } ]
   },
-  plugins: [
-    new CopyPlugin([
-      {from: '../samples/index.html', to: '.'}
-    ])
-  ],
   devServer: {
     contentBase: __dirname + "/src"
   },
   resolve: {
-    modules: [path.resolve(__dirname, "src"), "node_modules"]
+    modules: [ path.resolve( __dirname, "src" ), "node_modules" ]
   }
 };
