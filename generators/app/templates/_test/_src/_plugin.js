@@ -1,26 +1,58 @@
-//eslint-disable-next-line no-unused-vars
-import <%= pluginName %>-plugin from '../../src/<%= pluginName %>.js'
-import playkit from 'playkit-js'
+// eslint-disable-next-line no-unused-vars
+import <%= className %> from '../../src/<%= pluginName %>.js'
+import loadPlayer from 'playkit-js'
+import * as TestUtils from 'playkit-js/test/src/utils/test-utils'
+
+const targetId = 'player-placeholder_<%= pluginName %>.spec';
 
 describe('<%= className %>Plugin', function () {
-  this.timeout(4000);
+  let player;
+  let config = {
+    sources: {
+      progressive: [
+        {
+          mimetype: "video/mp4",
+          url: "http://www.html5videoplayer.net/videos/toystory.mp4"
+        }
+      ]
+    },
+    plugins: {
+      "<%= pluginName %>": {}
+    }
+  };
 
-  it('should play mp4 stream while reporting youbora analytics', (done) => {
-    let player = playkit({
-      'sources': [{
-        'mimetype': 'video/mp4',
-        'url': 'http://deslasexta.antena3.com/mp_series1/2012/09/10/00001.mp4'
-      }],
-      'plugins': {
-        '<%= pluginName %>': {}
-      }
-    });
-    let video = document.getElementsByTagName("video")[0];
-    video.onplaying = function () {
-      player.destroy();
+  function createPlayerPlaceholder(targetId) {
+    TestUtils.createElement('DIV', targetId);
+    let el = document.getElementById(targetId);
+    el.style.height = '360px';
+    el.style.width = '640px';
+  }
+
+  function setupPlayer(config) {
+    player = loadPlayer(config);
+    let el = document.getElementById(targetId);
+    el.appendChild(player.getView());
+  }
+
+  before(function () {
+    createPlayerPlaceholder(targetId);
+  });
+
+  afterEach(function () {
+    player.destroy();
+    player = null;
+    TestUtils.removeVideoElementsFromTestPage();
+  });
+
+  after(function () {
+    TestUtils.removeElement(targetId);
+  });
+
+  it('should play mp4 stream with <%= pluginName %> plugin', (done) => {
+    setupPlayer(config);
+    player.addEventListener(player.Event.PLAYING, () => {
       done();
-    };
-    player.load();
+    });
     player.play();
   });
 });

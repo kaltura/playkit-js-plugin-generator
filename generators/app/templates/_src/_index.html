@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <script src="./playkit-<%= pluginName %>.js"></script>
+</head>
+<body>
+<div id="player-placeholder"></div>
+<script>
+  var playerContainer = document.querySelector("#player-placeholder");
+  var config = {
+    sources: {
+      progressive: [
+        {
+          mimetype: "video/mp4",
+          url: "http://www.html5videoplayer.net/videos/toystory.mp4"
+        }
+      ]
+    },
+    plugins: {
+      "<%= pluginName %>": {}
+    }
+  };
+  window.player = Playkit.loadPlayer(config);
+  playerContainer.appendChild(window.player.getView());
+  window.player.play();
+</script>
+</body>
+</html>

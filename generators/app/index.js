@@ -46,7 +46,7 @@ module.exports = class extends Generator {
 
     this.fs.copy(
       this.templatePath('_karma.conf.js'),
-      this.destinationPath('.karma.conf.js')
+      this.destinationPath('karma.conf.js')
     );
 
     this.fs.copy(
@@ -69,6 +69,11 @@ module.exports = class extends Generator {
       this.destinationPath('test/setup/prepare-test-environment.js')
     );
 
+    this.fs.copy(
+      this.templatePath('_test/_eslintrc.json'),
+      this.destinationPath('test/.eslintrc.json')
+    );
+
     this.fs.copyTpl(
       this.templatePath('_package.json'),
       this.destinationPath('package.json'), {
@@ -86,6 +91,14 @@ module.exports = class extends Generator {
     this.fs.copyTpl(
       this.templatePath('_webpack.config.js'),
       this.destinationPath('webpack.config.js'), {
+        pluginName: this.props.pluginName,
+        className: this.props.className
+      }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('_src/_index.html'),
+      this.destinationPath('src/index.html'), {
         pluginName: this.props.pluginName
       }
     );
@@ -108,6 +121,6 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.installDependencies();
+    // this.yarnInstall();
   }
 };

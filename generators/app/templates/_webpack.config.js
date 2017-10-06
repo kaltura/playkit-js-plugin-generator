@@ -1,43 +1,68 @@
 'use strict';
 
-const webpack = require( "webpack" );
-const path = require( "path" );
+const webpack = require("webpack");
+const path = require("path");
+const PROD = (process.env.NODE_ENV === 'production');
 
 module.exports = {
   context: __dirname + "/src",
-  entry: {
-    "playkit-js-<%= pluginName %>": "<%= pluginName %>.js"
-  },
+  entry: PROD ? {"playkit-<%= pluginName %>.min": "<%= pluginName %>.js"} : {"playkit-<%= pluginName %>": "<%= pluginName %>.js"},
   output: {
     path: __dirname + "/dist",
-    filename: '[name].js'
+    filename: '[name].js',
+    library: "PlaykitJs<%= className %>",
+    libraryTarget: "umd",
+    devtoolModuleFilenameTemplate: "./<%= pluginName %>/[resource-path]",
   },
   devtool: 'source-map',
+  plugins: PROD ? [new webpack.optimize.UglifyJsPlugin({sourceMap: true})] : [],
   module: {
-    rules: [ {
+    rules: [{
       test: /\.js$/,
-      use: [ {
+      use: [{
         loader: "babel-loader"
-      } ],
-      exclude: [ /node_modules/ ]
+      }],
+      exclude: [
+        /node_modules/
+      ]
     }, {
       test: /\.js$/,
-      exclude: /node_modules/,
+      exclude: [
+        /node_modules/
+      ],
       enforce: 'pre',
-      use: [ {
+      use: [{
         loader: 'eslint-loader',
         options: {
           rules: {
             semi: 0
           }
         }
-      } ]
-    } ]
+      }],
+    }, {
+      test: /\.css$/,
+      use: [{
+        loader: "style-loader"
+      }, {
+        loader: "css-loader"
+      }]
+    }]
   },
   devServer: {
     contentBase: __dirname + "/src"
   },
   resolve: {
-    modules: [ path.resolve( __dirname, "src" ), "node_modules" ]
+    modules: [
+      path.resolve(__dirname, "src"),
+      "node_modules"
+    ]
+  },
+  externals: {
+    "playkit-js": {
+      commonjs: "playkit-js",
+      commonjs2: "playkit-js",
+      amd: "playkit-js",
+      root: "Playkit"
+    }
   }
 };

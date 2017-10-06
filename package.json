@@ -1,13 +1,8 @@
 {
   "name": "generator-playkit-js-plugin",
-  "version": "0.0.1",
-  "description": "Plugin generator template for playkit-js web video player",
+  "version": "1.0.0",
+  "description": "Plugin generator for PlayKit JS player",
   "homepage": "",
-  "author": {
-    "name": "Dan Ziv",
-    "email": "dan.ziv@kaltura.com",
-    "url": ""
-  },
   "files": [
     "generators"
   ],
@@ -23,7 +18,8 @@
     "eslint": "^3.18.0",
     "eslint-config-xo-space": "^0.16.0",
     "jest": "^19.0.2",
-    "jest-cli": "^19.0.1"
+    "jest-cli": "^19.0.1",
+    "standard-version": "^4.2.0"
   },
   "dependencies": {
     "yeoman-generator": "^1.0.0",
@@ -36,7 +32,10 @@
   "scripts": {
     "prepublish": "nsp check",
     "pretest": "eslint . --fix",
-    "test": "jest"
+    "test": "jest",
+    "release:dry-run": "standard-version --dry-run",
+    "release": "standard-version",
+    "publish": "git push --follow-tags --no-verify origin master"
   },
   "eslintConfig": {
     "extends": "xo-space",

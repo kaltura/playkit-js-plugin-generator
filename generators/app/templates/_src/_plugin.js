@@ -1,5 +1,11 @@
-import {BasePlugin, registerPlugin} from 'playkit-js'
+// @flow
+import {registerPlugin, BasePlugin} from 'playkit-js'
 
+/**
+ * The plugin name.
+ * @type {string}
+ * @const
+ */
 const pluginName = "<%= pluginName %>";
 
 /**
@@ -9,6 +15,8 @@ const pluginName = "<%= pluginName %>";
 class <%= className %> extends BasePlugin {
   /**
    * TODO: Override and define your default configuration for the plugin.
+   * The default configuration of the plugin.
+   * @type {Object}
    * @static
    */
   static defaultConfig: Object = {};
@@ -26,8 +34,8 @@ class <%= className %> extends BasePlugin {
   /**
    * @constructor
    * @param {string} name - The plugin name.
-   * @param {Player} player - The player reference.
-   * @param {Object} config - The plugin configuration.
+   * @param {Player} player - The player instance.
+   * @param {Object} config - The plugin config.
    */
   constructor(name: string, player: Player, config: Object) {
     super(name, player, config);
@@ -43,8 +51,10 @@ class <%= className %> extends BasePlugin {
 
   /**
    * TODO: Define the destroy logic of your plugin.
+   * Destroys the plugin.
+   * @override
    * @public
-   * @return {void}
+   * @returns {void}
    */
   destroy(): void {
     // Write logic

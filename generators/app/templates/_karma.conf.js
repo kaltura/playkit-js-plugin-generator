@@ -1,32 +1,43 @@
-module.exports = function (config) {
-  // Create custom launcher in case running with Travis
-  const customLaunchers = {
-    Chrome_travis_ci: {
-      base: 'Chrome',
-      flags: ['--no-sandbox']
-    }
-  };
+const isWindows = /^win/.test(process.platform);
+const isMacOS = /^darwin/.test(process.platform);
+// Create custom launcher in case running with Travis
+const customLaunchers = {
+  Chrome_travis_ci: {
+    base: 'Chrome',
+    flags: ['--no-sandbox']
+  }
+};
 
+module.exports = function (config) {
   let karmaConf = {
     logLevel: config.LOG_INFO,
-    // Run in Chrome
-    browsers: ['Chrome'],
-    // Just run once by default
+    browsers: [
+      'Chrome',
+      'Firefox'
+    ],
+    concurrency: 1,
     singleRun: true,
-    // Use the mocha test framework
-    frameworks: ['mocha'],
+    colors: true,
+    frameworks: [
+      'mocha'
+    ],
     files: [
       'test/setup/karma.js'
     ],
-    exclude: ['src/declarations/**/*.js'],
     preprocessors: {
-      // Preprocess with webpack and our sourcemap loader
-      'src/**/*.js': ['webpack', 'sourcemap'],
-      'test/setup/karma.js': ['webpack', 'sourcemap']
+      'src/**/*.js': [
+        'webpack',
+        'sourcemap'
+      ],
+      'test/setup/karma.js': [
+        'webpack',
+        'sourcemap'
+      ]
     },
-    // Report results in this format
-    reporters: ['progress', 'coverage'],
-    // Kind of a copy of your webpack config
+    reporters: [
+      'progress',
+      'coverage'
+    ],
     webpack: {
       devtool: 'inline-source-map',
       module: {
@@ -35,24 +46,40 @@ module.exports = function (config) {
           use: [{
             loader: "babel-loader"
           }],
-          exclude: [/node_modules/]
+          exclude: [
+            /node_modules/
+          ]
+        }, {
+          test: /\.css$/,
+          use: [
+            {loader: "style-loader"},
+            {loader: "css-loader"}
+          ]
         }]
       }
     },
     webpackServer: {
-      noInfo: true // Please don't spam the console when running in karma!
+      noInfo: true
     },
     client: {
       mocha: {
-        // change Karma's debug.html to the mocha web reporter
-        reporter: 'html'
+        reporter: 'html',
+        timeout: 30000
       }
     }
   };
 
   if (process.env.TRAVIS) {
     karmaConf.customLaunchers = customLaunchers;
-    karmaConf.browsers = ['Chrome_travis_ci'];
+    karmaConf.browsers = [
+      'Chrome_travis_ci'
+    ];
+  } else {
+    if (isWindows) {
+      karmaConf.browsers.push('IE');
+    } else if (isMacOS) {
+      karmaConf.browsers.push('Safari');
+    }
   }
 
   config.set(karmaConf);
