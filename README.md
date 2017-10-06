@@ -1,4 +1,4 @@
-# generator-playkit-js-plugin
+# Playkit JS Plugin Generator 
 
 ## Installation
 
@@ -21,10 +21,6 @@ yo playkit-js-plugin
  * Yeoman is a person with feelings and opinions, but is very easy to work with.
  * Yeoman can be too opinionated at times but is easily convinced not to be.
  * Feel free to [learn more about Yeoman](http://yeoman.io/).
-
-## License
-
-Apache-2.0 © [Dan Ziv]()
 
 
 [npm-image]: https://badge.fury.io/js/generator-playkit-js-plugin.svg
