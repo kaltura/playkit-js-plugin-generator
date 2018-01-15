@@ -1,13 +1,12 @@
-// eslint-disable-next-line no-unused-vars
-import <%= className %> from '../../src/<%= pluginName %>.js'
-import loadPlayer from 'playkit-js'
+import '../../src/index.js'
+import {loadPlayer} from 'playkit-js'
 import * as TestUtils from 'playkit-js/test/src/utils/test-utils'
 
 const targetId = 'player-placeholder_<%= pluginName %>.spec';
 
 describe('<%= className %>Plugin', function () {
   let player;
-  let config = {
+  const config = {
     sources: {
       progressive: [
         {
@@ -30,7 +29,7 @@ describe('<%= className %>Plugin', function () {
 
   function setupPlayer(config) {
     player = loadPlayer(config);
-    let el = document.getElementById(targetId);
+    const el = document.getElementById(targetId);
     el.appendChild(player.getView());
   }
 

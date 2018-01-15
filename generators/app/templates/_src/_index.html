@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-
   <script src="./playkit-<%= pluginName %>.js"></script>
 </head>
 <body>
-<div id="player-placeholder"></div>
+<div id="player-placeholder" style="width: 360px; height: 640px;"></div>
 <script>
   var playerContainer = document.querySelector("#player-placeholder");
   var config = {
+    logLevel: "DEBUG",
     sources: {
       progressive: [
         {
@@ -23,9 +23,9 @@
       "<%= pluginName %>": {}
     }
   };
-  window.player = Playkit.loadPlayer(config);
+  var player = playkit.core.loadPlayer(config);
   playerContainer.appendChild(window.player.getView());
-  window.player.play();
+  player.play();
 </script>
 </body>
 </html>

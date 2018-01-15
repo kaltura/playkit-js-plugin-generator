@@ -1,18 +1,11 @@
 // @flow
-import {registerPlugin, BasePlugin} from 'playkit-js'
-
-/**
- * The plugin name.
- * @type {string}
- * @const
- */
-const pluginName = "<%= pluginName %>";
+import {BasePlugin} from 'playkit-js'
 
 /**
  * Your class description.
  * @classdesc
  */
-class <%= className %> extends BasePlugin {
+export default class <%= className %> extends BasePlugin {
   /**
    * TODO: Override and define your default configuration for the plugin.
    * The default configuration of the plugin.
@@ -59,9 +52,15 @@ class <%= className %> extends BasePlugin {
   destroy(): void {
     // Write logic
   }
-}
 
-/**
- * Register the plugin in the playkit-js plugin framework.
- */
-registerPlugin(pluginName, <%= className %>);
+  /**
+   * TODO: Define the reset logic of your plugin.
+   * Resets the plugin.
+   * @override
+   * @public
+   * @returns {void}
+   */
+  reset(): void {
+  // Write logic
+  }
+}

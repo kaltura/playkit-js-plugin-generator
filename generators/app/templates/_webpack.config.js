@@ -1,21 +1,41 @@
 'use strict';
 
 const webpack = require("webpack");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require("path");
 const PROD = (process.env.NODE_ENV === 'production');
+const packageData = require("./package.json");
+
+const plugins = [
+  new webpack.DefinePlugin({
+    __VERSION__: JSON.stringify(packageData.version),
+    __NAME__: JSON.stringify(packageData.name)
+  })
+];
+
+if (PROD) {
+  plugins.push(new webpack.optimize.UglifyJsPlugin({sourceMap: true}));
+} else {
+  plugins.push(new CopyWebpackPlugin([{
+    from: '',
+    to: '.'
+  }]));
+}
 
 module.exports = {
   context: __dirname + "/src",
-  entry: PROD ? {"playkit-<%= pluginName %>.min": "<%= pluginName %>.js"} : {"playkit-<%= pluginName %>": "<%= pluginName %>.js"},
+  entry: {
+    "playkit-<%= pluginName %>": "index.js"
+  },
   output: {
     path: __dirname + "/dist",
     filename: '[name].js',
-    library: "PlaykitJs<%= className %>",
+    library: ["playkit", "<%= configurableName %>"],
     libraryTarget: "umd",
-    devtoolModuleFilenameTemplate: "./<%= pluginName %>/[resource-path]",
+    devtoolModuleFilenameTemplate: "./<%= pluginName %>/[resource-path]"
   },
   devtool: 'source-map',
-  plugins: PROD ? [new webpack.optimize.UglifyJsPlugin({sourceMap: true})] : [],
+  plugins: plugins,
   module: {
     rules: [{
       test: /\.js$/,
@@ -28,6 +48,7 @@ module.exports = {
     }, {
       test: /\.js$/,
       exclude: [
+
         /node_modules/
       ],
       enforce: 'pre',
@@ -38,13 +59,6 @@ module.exports = {
             semi: 0
           }
         }
-      }],
-    }, {
-      test: /\.css$/,
-      use: [{
-        loader: "style-loader"
-      }, {
-        loader: "css-loader"
       }]
     }]
   },
@@ -62,7 +76,7 @@ module.exports = {
       commonjs: "playkit-js",
       commonjs2: "playkit-js",
       amd: "playkit-js",
-      root: "Playkit"
+      root: ["playkit", "core"]
     }
   }
 };

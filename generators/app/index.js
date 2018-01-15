@@ -15,6 +15,7 @@ module.exports = class extends Generator {
       this.props = props;
       this.props.pluginName = _.kebabCase(_.toLower(props.name));
       this.props.className = _.upperFirst(_.camelCase(props.name));
+      this.props.configurableName = _.camelCase(this.props.className);
     }.bind(this));
   }
 
@@ -92,14 +93,25 @@ module.exports = class extends Generator {
       this.templatePath('_webpack.config.js'),
       this.destinationPath('webpack.config.js'), {
         pluginName: this.props.pluginName,
-        className: this.props.className
+        className: this.props.className,
+        configurableName: this.props.configurableName
       }
     );
+
 
     this.fs.copyTpl(
       this.templatePath('_src/_index.html'),
       this.destinationPath('src/index.html'), {
         pluginName: this.props.pluginName
+      }
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('_src/_index.js'),
+      this.destinationPath('src/index.js'), {
+        pluginName: this.props.pluginName,
+        className: this.props.className,
+        configurableName: this.props.configurableName
       }
     );
 
