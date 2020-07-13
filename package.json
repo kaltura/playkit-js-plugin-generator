@@ -19,7 +19,7 @@
     "eslint-config-xo-space": "^0.16.0",
     "jest": "^19.0.2",
     "jest-cli": "^19.0.1",
-    "standard-version": "^4.2.0"
+    "standard-version": "^8.0.1"
   },
   "dependencies": {
     "yeoman-generator": "^1.0.0",
